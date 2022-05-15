@@ -1,0 +1,26 @@
+server:
+  port: 10010
+  ip: 127.0.0.1
+  servlet:
+    context-path: /
+
+spring:
+  profiles:
+    active: test
+  application:
+    name: srh-spider-service
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    check-template: false
+    check-template-location: false
+
+jdbc:
+  url: jdbc:mysql://127.0.0.1:3306/srh_bookmanage_service?useUnicode=true&autoReconnect=true&allowMultiQueries=true&characterEncoding=utf-8&connectTimeout=1000&socketTimeout=180000&useSSL=false
+  username: root
+  password: admin123

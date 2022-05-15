@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- log4j2 配置加载优先级: 先看1，没有则看2，依次类推
+	1.	环境变量 log4j.configurationFile, 读取对应配置文件，并根据后缀加载
+	以下都在classpath寻找:
+	2.	log4j2-test.properties
+	3.	log4j2-test.yaml or log4j2-test.yml
+	4.	log4j2-test.json or log4j2-test.jsn
+	5.	log4j2-test.xml
+
+	6.	log4j2.properties
+	7.	log4j2.yaml or log4j2.yml
+	8.	log4j2.json or log4j2.jsn
+	9.	log4j2.xml
+
+	10.	默认的DefaultConfiguration
+-->
+
+<!--
+	log4j2.xml是生产环境的配置
+	项目线下测试或者自己debug可以加载自己的test配置，
+	test配置会优先log4j2.xml加载
+	test配置不应当提交到git
+-->
+
+<!-- status，用于设置看log4j2内部的输出， 可不写-->
+<!-- monitorInterval, 自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<Configuration status="TRACE">
+
+    <Properties>
+        <Property name="LOG_ROOT" value="${sys:-logs}"></Property>
+        <Property name="BACKUP_FOLDER">${LOG_ROOT}/bak</Property>
+        <Property name="reqFormat">%d{yyyy-MM-dd HH:mm:ss} [%t] %msg%n</Property>
+        <Property name="logFormat">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %C{1.} - %msg%n</Property>
+        <Property name="errFormat">%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %C{1.} - %msg%n %ex%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logFormat}"/>
+        </Console>
+        <!-- 按天分日志，归档到backup_folder -->
+        <!-- immediateFlush, true,无buffer  false,有buffer,可配置大小bufferSize, 默认8192bytes -->
+        <RollingFile name="infoLog" fileName="${LOG_ROOT}/info.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/info.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="debugLog" fileName="${LOG_ROOT}/debug.log" immediateFlush="false">
+            <FilePattern>${BACKUP_FOLDER}/debug.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorLog" fileName="${LOG_ROOT}/error.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/error.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${errFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="messLog" fileName="${LOG_ROOT}/mess.log">
+            <FilePattern>${BACKUP_FOLDER}/mess.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="businessExceptionLog" fileName="${LOG_ROOT}/business_exception.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/business_exception.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="rawReqLog" fileName="${LOG_ROOT}/raw_req.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/raw_req.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${reqFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="reqLog" fileName="${LOG_ROOT}/req.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/req.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${reqFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="respLog" fileName="${LOG_ROOT}/resp.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/resp.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${reqFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="apiReqLog" fileName="${LOG_ROOT}/api_req.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/api_req.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${reqFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="refineLog" fileName="${LOG_ROOT}/refine.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/refine.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="cronRepayLog" fileName="${LOG_ROOT}/cron_repay.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/cron_repay.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="callbackLog" fileName="${LOG_ROOT}/callback.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/callback.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="notifyLog" fileName="${LOG_ROOT}/notify.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/notify.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="reportLog" fileName="${LOG_ROOT}/report.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/report.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="mqLog" fileName="${LOG_ROOT}/mq.log" immediateFlush="true">
+            <FilePattern>${BACKUP_FOLDER}/mq.log.%d{yyyy-MM-dd}.gz</FilePattern>
+            <PatternLayout pattern="${logFormat}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <logger name="infoLogger" level="info" additivity="false">
+            <AppenderRef ref="infoLog"/>
+        </logger>
+        <logger name="debugLogger" level="debug" additivity="false">
+            <AppenderRef ref="debugLog"/>
+        </logger>
+        <logger name="errorLogger" level="error" additivity="false">
+            <AppenderRef ref="errorLog"/>
+        </logger>
+
+        <logger name="businessExceptionLogger" level="info" additivity="false">
+            <AppenderRef ref="businessExceptionLog"/>
+        </logger>
+
+        <logger name="rawReqLogger" level="info" additivity="false">
+            <AppenderRef ref="rawReqLog"/>
+        </logger>
+        <logger name="reqLogger" level="info" additivity="false">
+            <AppenderRef ref="reqLog"/>
+        </logger>
+        <logger name="respLogger" level="info" additivity="false">
+            <AppenderRef ref="respLog"/>
+        </logger>
+        <logger name="apiReqLogger" level="info" additivity="false">
+            <AppenderRef ref="apiReqLog"/>
+        </logger>
+        <logger name="refineLogger" level="info" additivity="false">
+            <AppenderRef ref="refineLog"/>
+        </logger>
+
+        <logger name="cronRepayLogger" level="info" additivity="false">
+            <AppenderRef ref="cronRepayLog"/>
+        </logger>
+        <logger name="callbackLogger" level="info" additivity="false">
+            <AppenderRef ref="callbackLog"/>
+        </logger>
+        <logger name="notifyLogger" level="info" additivity="false">
+            <AppenderRef ref="notifyLog"/>
+        </logger>
+        <logger name="reportLogger" level="info" additivity="false">
+            <AppenderRef ref="reportLog"/>
+        </logger>
+        <logger name="mqLogger" level="info" additivity="false">
+            <AppenderRef ref="mqLog"/>
+        </logger>
+        <Root level="info">
+            <AppenderRef ref="messLog"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
