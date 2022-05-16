@@ -80,7 +80,7 @@ public class BookServiceImpl extends SpiderService {
                     .cookie("viewed","6525189_35785583_20311537_35743588_11524177_26417290_35006761_35381506_33422386_6879362")
                     .cookie("__utmt_douban","1")
                     .cookie("gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03", "6632e156-7bfc-44ed-bf2b-121d614d1a75")
-                    .timeout(30000)
+                    .timeout(20000)
                     .post();
         } catch (IOException e) {
             e.printStackTrace();

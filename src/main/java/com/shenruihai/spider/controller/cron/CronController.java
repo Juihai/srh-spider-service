@@ -1,4 +1,4 @@
-package com.shenruihai.spider.controller;
+package com.shenruihai.spider.controller.cron;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.shenruihai.spider.exception.ThreadExceptionHandler;
