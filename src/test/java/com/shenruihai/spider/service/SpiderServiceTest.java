@@ -17,9 +17,6 @@ public class SpiderServiceTest extends TestBase {
     @Autowired
     ApplicationContext applicationContext;
 
-
-    private final long startSubjectId = 1000001;
-
     @Test
     public void mainTest(){
         SpiderService spiderService = (SpiderService) applicationContext.getBean("bookService");
@@ -28,10 +25,10 @@ public class SpiderServiceTest extends TestBase {
         while(true){
             boolean result = spiderService.spiderDancer(exeCuteId);
             if(!result){
-                SpiderLogger.errorLog.error("获取数据失败, subjectId: "+startSubjectId);
+                SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
             }else {
                 //执行成功，暂停100ms
-                sleep();
+//                sleep();
             }
             exeCuteId +=1;
         }
