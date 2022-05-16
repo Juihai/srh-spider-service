@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.shenruihai</groupId>
-    <artifactId>spider</artifactId>
+    <artifactId>srh-spider-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spider</name>
     <description>Demo project for Spring Boot</description>
