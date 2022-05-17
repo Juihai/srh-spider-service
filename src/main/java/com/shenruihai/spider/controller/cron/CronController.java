@@ -4,8 +4,10 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.shenruihai.spider.exception.ThreadExceptionHandler;
 import com.shenruihai.spider.log.SpiderLogger;
 import com.shenruihai.spider.service.SpiderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,6 +58,25 @@ public class CronController {
             }
         });
 
+    }
+
+    /**
+     * 手动修复数据
+     * @param serviceName
+     * @param subjectId
+     * @return
+     */
+    @RequestMapping("/fixData")
+    public ResponseEntity<String> fixBookData(String serviceName, String subjectId){
+        if(StringUtils.isBlank(serviceName)){
+            return ResponseEntity.ok("serviceName is null.");
+        }
+        if(StringUtils.isBlank(subjectId)){
+            return ResponseEntity.ok("subjectId is null.");
+        }
+        SpiderService spiderService = (SpiderService) applicationContext.getBean(serviceName);
+        boolean ret = spiderService.spiderDancer(Long.parseLong(subjectId));
+        return ResponseEntity.ok("fixBookDate Finished, result: "+ ret);
     }
 
     private static void sleep(){

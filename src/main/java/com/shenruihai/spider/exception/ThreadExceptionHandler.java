@@ -1,12 +1,11 @@
 package com.shenruihai.spider.exception;
 
-
 import com.shenruihai.spider.log.SpiderLogger;
 
 import java.util.Arrays;
 
 /**
- *
+ * 线程异常处理
  * @author shenruihai
  * @date 2022/5/16
  */

@@ -43,7 +43,7 @@ public class BookServiceImpl extends SpiderService {
         }
         DoubanBook book = this.toParse(document, subjectId);
         if(book == null){
-            SpiderLogger.infoLog.info("你想访问的条目豆瓣不收, subjectId="+subjectId);
+            SpiderLogger.infoLog.info("你想访问的条目豆瓣不收录, subjectId="+subjectId);
             return false;
         }
         DoubanBook readBook = doubanBookDao.findByIsbnCode(book.isbnCode);
