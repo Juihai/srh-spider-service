@@ -52,7 +52,7 @@ public class CronController {
                     SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
                 }else {
                     //执行成功，暂停100ms
-                    sleep();
+//                    sleep();
                 }
                 exeCuteId +=1;
             }

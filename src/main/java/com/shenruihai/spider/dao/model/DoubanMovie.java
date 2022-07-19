@@ -32,7 +32,7 @@ public class DoubanMovie implements Serializable {
     @Column
     public String subName;//副标题
 
-    @Column(length = 64)
+    @Column
     public String originalName;//原作名
 
     @Column
