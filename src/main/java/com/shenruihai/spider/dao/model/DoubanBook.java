@@ -32,13 +32,13 @@ public class DoubanBook implements Serializable {
     @Column
     public String subName;//子书名
 
-    @Column(length = 64)
+    @Column(length = 128)
     public String originalName;//原作名
 
     @Column
     public String keywords;//关键词
 
-    @Column(length = 64)
+    @Column(length = 128)
     public String author;//作者
 
     @Lob

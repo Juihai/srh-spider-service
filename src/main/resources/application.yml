@@ -21,7 +21,16 @@ spring:
     check-template-location: false
 
 jdbc:
-#  url: jdbc:mysql://1.117.216.205:3306/srh_bookmanage_service?useUnicode=true&autoReconnect=true&allowMultiQueries=true&characterEncoding=utf-8&connectTimeout=1000&socketTimeout=180000&useSSL=false
-  url: jdbc:mysql://127.0.0.1:3306/srh_bookmanage_service?useUnicode=true&autoReconnect=true&allowMultiQueries=true&characterEncoding=utf-8&connectTimeout=1000&socketTimeout=180000&useSSL=false
+#  url: jdbc:mysql://127.0.0.1:3306/srh_bookmanage_service?useUnicode=true&autoReconnect=true&allowMultiQueries=true&characterEncoding=utf-8&connectTimeout=1000&socketTimeout=180000&useSSL=false
+  url: jdbc:mysql://117.50.187.144:3306/srh_bookmanage_service?useUnicode=true&autoReconnect=true&allowMultiQueries=true&characterEncoding=utf-8&connectTimeout=1000&socketTimeout=180000&useSSL=false
   username: root
   password: B*LHUKi%G8nP
+
+
+msg:
+  notify:
+    mailServer: smtp.163.com
+    sender: spiderdancer@163.com
+    password: ZLISTPHZVJMXNTIA
+    recipients: 1076073437@qq.com,shenruihai@baimaodai.com
+

@@ -44,19 +44,17 @@ public class CronController {
         if(subjectId < 1){
             throw new Exception("subjectId is invalid, subjectId: "+subjectId);
         }
-        cronExecutorService.execute(() -> {
-            long exeCuteId = subjectId +1;
-            while(true){
-                boolean result = spiderService.spiderDancer(exeCuteId);
-                if(!result){
-                    SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
-                }else {
-                    //执行成功，暂停100ms
-//                    sleep();
-                }
-                exeCuteId +=1;
+        long exeCuteId = subjectId +1;
+        while(true){
+            boolean result = spiderService.spiderDancer(exeCuteId);
+            if(!result){
+                SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
+            }else {
+//                执行成功，暂停100ms
+                sleep();
             }
-        });
+            exeCuteId +=1;
+        }
 
     }
 
@@ -81,7 +79,7 @@ public class CronController {
 
     private static void sleep(){
         try {
-            Thread.sleep(50);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

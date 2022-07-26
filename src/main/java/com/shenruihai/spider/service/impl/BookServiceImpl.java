@@ -3,6 +3,7 @@ package com.shenruihai.spider.service.impl;
 import com.shenruihai.spider.dao.DoubanBookDao;
 import com.shenruihai.spider.dao.model.DoubanBook;
 import com.shenruihai.spider.log.SpiderLogger;
+import com.shenruihai.spider.service.MsgNotifyService;
 import com.shenruihai.spider.service.SpiderService;
 import com.shenruihai.spider.utils.IsbnUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,8 @@ public class BookServiceImpl extends SpiderService {
 
     @Autowired
     DoubanBookDao doubanBookDao;
+    @Autowired
+    MsgNotifyService msgNotifyService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -48,10 +51,14 @@ public class BookServiceImpl extends SpiderService {
         }
         DoubanBook readBook = doubanBookDao.findByIsbnCode(book.isbnCode);
         if(readBook != null){
-            SpiderLogger.infoLog.info("该信息已入库, ISBN: "+book.isbnCode);
             return true;
         }
-        doubanBookDao.save(book);
+        try{
+            doubanBookDao.save(book);
+        }catch (Exception e){
+            msgNotifyService.notifyDev("doubanBook save error,"+e.getMessage());
+            System.out.println(e.getMessage());
+        }
         SpiderLogger.infoLog.info("数据保存成功, subjectId= "+subjectId+" , ISBN: "+ book.isbnCode);
 
         return true;
