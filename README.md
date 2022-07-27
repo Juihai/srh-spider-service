@@ -4,12 +4,12 @@
 ```shell
 java -jar spider.jar --server.port=22080 &
 ```
-#### 2. 触发请求，开始爬去
+#### 2. 触发请求，开始爬取
 ```
 curl 'http://127.0.0.1:22080/cron/spiderRun?serviceName=bookService'
 ```
 
 #### 3. ip被封测试链接
-```json5
+```
 curl 'https://book.douban.com/subject/1010599/'
 ```

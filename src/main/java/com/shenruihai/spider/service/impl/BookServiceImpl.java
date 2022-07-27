@@ -72,21 +72,23 @@ public class BookServiceImpl extends SpiderService {
      */
     @Override
     public Document doGet(long subjectId) {
+
         try {
             return Jsoup.connect("https://book.douban.com/subject/"+subjectId+"/")
-                    //                .data("wd","我")
+//                    .proxy("39.175.92.205", 30001)
                     .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36")
                     .cookie("ll","108288")
                     .cookie("bid", "KM9WS0ul-wk")
-                    .cookie("__utmv", "30149280.14535")
                     .cookie("douban-fav-remind","1")
-                    .cookie("gr_user_id", "d7cec71d-d52c-4d65-ad10-ab176027ef69")
-                    .cookie("__utmc","81379588")//连接超时更新这里 session
-                    .cookie("ck","f7Of")
-                    .cookie("ap_v","0,6.0")
-                    .cookie("viewed","6525189_35785583_20311537_35743588_11524177_26417290_35006761_35381506_33422386_6879362")
-                    .cookie("__utmt_douban","1")
+                    .cookie("gr_user_id", "80a83b3f-a27a-4a98-8cd7-9ea2852832ca")
+                    .cookie("ck","HHws")
+                    .cookie("viewed","1000067_35921760_24748615_1578545_1322455_35914877_26410730_3633461")
                     .cookie("gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03", "6632e156-7bfc-44ed-bf2b-121d614d1a75")
+                    .cookie("bid","bi1mQfnRUd8")
+                    .cookie("_pk_id.100001.3ac3","d6bb4abb099b79b3.1658223009.10.1658829103.1658825390.")
+                    .cookie("_pk_id.100001.8cb4","de63b32ea26ff382.1656569547.4.1658825498.1658479967.")
+                    .cookie("_pk_ses.100001.3ac3","*")
+                    .cookie("_pk_ref.100001.3ac3","%5B%22%22%2C%22%22%2C1658829414%2C%22https%3A%2F%2Faccounts.douban.com%2F%22%5D")
                     .timeout(20000)
                     .post();
         } catch (IOException e) {

@@ -26,17 +26,15 @@ public class SpiderServiceTest extends TestBase {
             boolean result = spiderService.spiderDancer(exeCuteId);
             if(!result){
                 SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
-            }else {
-                //执行成功，暂停100ms
-//                sleep();
             }
+            sleep();
             exeCuteId +=1;
         }
     }
 
     private static void sleep(){
         try {
-            Thread.sleep(100);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
