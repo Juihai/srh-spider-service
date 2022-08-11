@@ -38,5 +38,12 @@ public abstract class SpiderService {
      */
     public abstract long findTopByOrderByIdDesc();
 
+    /**
+     * 判断主键id是否存在
+     * @param id
+     * @return
+     */
+    public abstract long isExistInfo(long id);
+
 
 }

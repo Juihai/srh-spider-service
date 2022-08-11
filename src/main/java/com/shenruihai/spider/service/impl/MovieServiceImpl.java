@@ -48,4 +48,9 @@ public class MovieServiceImpl extends SpiderService {
     public long findTopByOrderByIdDesc() {
         return 0l;
     }
+
+    @Override
+    public long isExistInfo(long id) {
+        return 0;
+    }
 }

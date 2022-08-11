@@ -15,4 +15,11 @@ public interface DoubanBookDao extends JpaRepository<DoubanBook, Long> {
      */
     DoubanBook findTopByOrderByIdDesc();
 
+    /**
+     *
+     * @param subjectId
+     * @return
+     */
+    DoubanBook findByDouban(long subjectId);
+
 }

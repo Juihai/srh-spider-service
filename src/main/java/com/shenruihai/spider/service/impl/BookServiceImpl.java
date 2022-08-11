@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 负责图书数据的爬取和解析
@@ -39,6 +43,12 @@ public class BookServiceImpl extends SpiderService {
             return false;
         }
 
+        DoubanBook readBook = doubanBookDao.findByDouban(subjectId);
+        if(readBook != null){
+            SpiderLogger.infoLog.info("数据已存在, subjectId= "+subjectId+" , ISBN: "+ readBook.isbnCode);
+            return true;
+        }
+
         Document document = this.doGet(subjectId);
         if(document == null){
             SpiderLogger.infoLog.info("未查询到对应信息, subjectId="+subjectId);
@@ -49,10 +59,7 @@ public class BookServiceImpl extends SpiderService {
             SpiderLogger.infoLog.info("你想访问的条目豆瓣不收录, subjectId="+subjectId);
             return false;
         }
-        DoubanBook readBook = doubanBookDao.findByIsbnCode(book.isbnCode);
-        if(readBook != null){
-            return true;
-        }
+
         try{
             doubanBookDao.save(book);
         }catch (Exception e){
@@ -74,21 +81,12 @@ public class BookServiceImpl extends SpiderService {
     public Document doGet(long subjectId) {
 
         try {
+            Map cookieMap = getCookieMap();
+
             return Jsoup.connect("https://book.douban.com/subject/"+subjectId+"/")
 //                    .proxy("39.175.92.205", 30001)
-                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36")
-                    .cookie("ll","108288")
-                    .cookie("bid", "KM9WS0ul-wk")
-                    .cookie("douban-fav-remind","1")
-                    .cookie("gr_user_id", "80a83b3f-a27a-4a98-8cd7-9ea2852832ca")
-                    .cookie("ck","HHws")
-                    .cookie("viewed","1000067_35921760_24748615_1578545_1322455_35914877_26410730_3633461")
-                    .cookie("gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03", "6632e156-7bfc-44ed-bf2b-121d614d1a75")
-                    .cookie("bid","bi1mQfnRUd8")
-                    .cookie("_pk_id.100001.3ac3","d6bb4abb099b79b3.1658223009.10.1658829103.1658825390.")
-                    .cookie("_pk_id.100001.8cb4","de63b32ea26ff382.1656569547.4.1658825498.1658479967.")
-                    .cookie("_pk_ses.100001.3ac3","*")
-                    .cookie("_pk_ref.100001.3ac3","%5B%22%22%2C%22%22%2C1658829414%2C%22https%3A%2F%2Faccounts.douban.com%2F%22%5D")
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36")
+                    .cookies(cookieMap)
                     .timeout(20000)
                     .post();
         } catch (IOException e) {
@@ -170,4 +168,21 @@ public class BookServiceImpl extends SpiderService {
         DoubanBook book = doubanBookDao.findTopByOrderByIdDesc();
         return book != null ? book.douban : minSubjectId;
     }
+
+    public long isExistInfo(long subjectId){
+        DoubanBook book = doubanBookDao.findByDouban(subjectId);
+        return book != null ? book.id : -1;
+    }
+
+    public Map getCookieMap(){
+        String cookiePlain = "bid=bi1mQfnRUd8; ll=\"108288\"; __utmc=30149280; __utmc=81379588; gr_user_id=80a83b3f-a27a-4a98-8cd7-9ea2852832ca; _vwo_uuid_v2=DBB321D1F5CA061502578B8869D179975|5ffeff6c64f73f1e524b67493b92ca17; _ga=GA1.1.1452951026.1658801495; _ga_RXNMP372GL=GS1.1.1658801495.1.0.1658801497.58; Hm_lvt_16a14f3002af32bf3a75dfe352478639=1658801504; Hm_lpvt_16a14f3002af32bf3a75dfe352478639=1658801504; push_noty_num=0; push_doumail_num=0; __utmv=30149280.14535; ct=y; viewed=\"27613353_35288324_35317149_27167368_35498118_26969957_4820710_25818441_25798623_1000067\"; dbcl2=\"145353480:61lnoaQbgx8\"; ck=tqLM; __utmz=30149280.1660009024.26.10.utmcsr=search.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/book/subject_search; __utmz=81379588.1660009024.20.9.utmcsr=search.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/book/subject_search; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03=1681702f-5ba7-4b51-ae31-9815104d243b; gr_cs1_1681702f-5ba7-4b51-ae31-9815104d243b=user_id:1; gr_session_id_22c937bbd8ebd703f2d8e9445f7dfd03_1681702f-5ba7-4b51-ae31-9815104d243b=true; ap_v=0,6.0; _pk_ref.100001.3ac3=[\"\",\"\",1660205745,\"https://search.douban.com/book/subject_search?search_text=%E4%B8%AD%E5%9B%BD%E5%91%BD%E7%90%86%E5%AD%A6&cat=1001\"]; _pk_id.100001.3ac3=d6bb4abb099b79b3.1658223009.22.1660205745.1660111813.; _pk_ses.100001.3ac3=*; __utma=30149280.1603367308.1656569548.1660111753.1660205745.28; __utmb=30149280.1.10.1660205745; __utma=81379588.157348678.1658223009.1660111753.1660205745.22; __utmb=81379588.1.10.1660205745";
+        List<String> cookieStrList = Arrays.asList(cookiePlain.split(" ").clone());
+        Map<String, String> resultMap = new HashMap<>();
+        for(String cookieStr : cookieStrList){
+            String[] cookieArr = cookieStr.split("=");
+            resultMap.put(cookieArr[0], cookieArr[1]);
+        }
+        return resultMap;
+    }
+
 }
