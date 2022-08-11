@@ -2,7 +2,6 @@ package com.shenruihai.spider.controller.cron;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.shenruihai.spider.exception.ThreadExceptionHandler;
-import com.shenruihai.spider.log.SpiderLogger;
 import com.shenruihai.spider.service.MsgNotifyService;
 import com.shenruihai.spider.service.SpiderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,18 +51,16 @@ public class CronController {
             long exeCuteId = subjectId +1;
             int failedCount = 0;
             while(true){
-                boolean result = spiderService.spiderDancer(exeCuteId);
-                if(!result){
-                    failedCount += 1;
-                    SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
-                }else {
-                    failedCount=0;
+                boolean isExist = spiderService.isExistInfo(subjectId);
+                if(!isExist){
+                    boolean result = spiderService.spiderDancer(exeCuteId);
+                    failedCount = result ? 0 : failedCount+1;
+                    if(failedCount>=failedLimit){
+                        msgNotifyService.notifyOp("获取数据失败次数过多，请检查后重新开始。 失败subjectId="+subjectId);
+                        break;
+                    }
+                    this.sleep();
                 }
-                if(failedCount>=failedLimit){
-                    msgNotifyService.notifyOp("获取数据失败次数过多，请检查后重新开始。 失败subjectId="+subjectId);
-                    break;
-                }
-                this.sleep();
                 exeCuteId +=1;
             }
         });

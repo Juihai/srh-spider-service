@@ -26,17 +26,15 @@ public class SpiderServiceTest extends TestBase {
         long exeCuteId = subjectId +1;
         long failedCount = 0;
         while(true){
-            boolean result = spiderService.spiderDancer(exeCuteId);
-            if(!result){
-                failedCount +=1;
-                SpiderLogger.errorLog.error("获取数据失败, subjectId: "+exeCuteId);
-            }else {
-                failedCount = 0;
+            boolean isExist = spiderService.isExistInfo(subjectId);
+            if(!isExist){
+                boolean result = spiderService.spiderDancer(exeCuteId);
+                failedCount = result ? 0 : failedCount+1;
+                sleep();
             }
             if(failedCount>= failedLimit){
                 throw new Exception("失败次数过多，请检查");
             }
-            sleep();
             exeCuteId +=1;
         }
     }
@@ -53,8 +51,8 @@ public class SpiderServiceTest extends TestBase {
     public void fixTest(){
         SpiderService spiderService = (SpiderService) applicationContext.getBean("bookService");
         long exeCuteId = 25798623;
-        long resultId = spiderService.isExistInfo(exeCuteId);
-        if(resultId>0){
+        boolean isExist = spiderService.isExistInfo(exeCuteId);
+        if(isExist){
             System.out.println("该数据已完成入库");
             return;
         }

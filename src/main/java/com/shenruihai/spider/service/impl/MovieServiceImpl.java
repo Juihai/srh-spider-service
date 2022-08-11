@@ -50,7 +50,7 @@ public class MovieServiceImpl extends SpiderService {
     }
 
     @Override
-    public long isExistInfo(long id) {
-        return 0;
+    public boolean isExistInfo(long id) {
+        return false;
     }
 }

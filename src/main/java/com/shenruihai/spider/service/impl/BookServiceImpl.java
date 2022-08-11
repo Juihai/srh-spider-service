@@ -43,12 +43,6 @@ public class BookServiceImpl extends SpiderService {
             return false;
         }
 
-        DoubanBook readBook = doubanBookDao.findByDouban(subjectId);
-        if(readBook != null){
-            SpiderLogger.infoLog.info("数据已存在, subjectId= "+subjectId+" , ISBN: "+ readBook.isbnCode);
-            return true;
-        }
-
         Document document = this.doGet(subjectId);
         if(document == null){
             SpiderLogger.infoLog.info("未查询到对应信息, subjectId="+subjectId);
@@ -169,9 +163,9 @@ public class BookServiceImpl extends SpiderService {
         return book != null ? book.douban : minSubjectId;
     }
 
-    public long isExistInfo(long subjectId){
+    public boolean isExistInfo(long subjectId){
         DoubanBook book = doubanBookDao.findByDouban(subjectId);
-        return book != null ? book.id : -1;
+        return book != null;
     }
 
     public Map getCookieMap(){
