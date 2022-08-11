@@ -51,7 +51,7 @@ public class CronController {
             long exeCuteId = subjectId +1;
             int failedCount = 0;
             while(true){
-                boolean isExist = spiderService.isExistInfo(subjectId);
+                boolean isExist = spiderService.isExistInfo(exeCuteId);
                 if(!isExist){
                     boolean result = spiderService.spiderDancer(exeCuteId);
                     failedCount = result ? 0 : failedCount+1;
