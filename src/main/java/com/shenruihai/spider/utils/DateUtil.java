@@ -124,4 +124,18 @@ public class DateUtil {
         return date.after(DateUtil.addSeconds(new Date(), tolerantSeconds));
     }
 
+    /**
+     * 判断当前时间是否为整点
+     * o`clock 为 of the clock 缩写，只用于整点
+     */
+    public static boolean isOfTheClock(){
+        long timeStamp = System.currentTimeMillis();
+        long intervalSeconds = 60*60*1000;
+        //小于一分钟(即60000ms)都为整点
+        if(timeStamp%intervalSeconds<60*1000){
+            return true;
+        }
+        return false;
+    }
+
 }
